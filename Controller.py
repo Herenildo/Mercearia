@@ -83,7 +83,8 @@ class ControllerEstoque:
                 print('Produto já existe em estoque')
         else:
             print('Categoria não existe')
-
+            
+            
 
     def removerProduto(self,codProduto):
         x = DaoEstoque.ler()
@@ -110,7 +111,7 @@ class ControllerEstoque:
             arq.writelines('\n')
 
 
-    def alterarProduto(self, codAlterar, novoCodProduto,novoDescricao,novoCategoria,novoQuantidade):
+    def alterarProduto(self, codAlterar, novoCodProduto,novoDescricao,novoPreco,novoCategoria,novoQuantidade):
         x = DaoEstoque.ler()
         y = DaoCategoria.ler()
         h = list(filter(lambda x: x.categoria == novoCategoria, y))
@@ -122,8 +123,7 @@ class ControllerEstoque:
                 est = list(filter(lambda x: x.produto.codProduto == novoCodProduto, x))       
 
                 if len(est) == 0:
-                    x = list(map(lambda x: Estoque(Produtos(novoCodProduto,novoDescricao,novoCategoria),novoQuantidade)
-                    if(x.produto.codProduto == codAlterar) else(x),x))
+                    x = list(map(lambda x: Estoque(Produtos(novoCodProduto,novoDescricao,novoPreco,novoCategoria),novoQuantidade) if(x.produto.codProduto == codAlterar) else(x), x))
                     print('Produto alterado com sucesso')
 
                 else:
@@ -131,7 +131,6 @@ class ControllerEstoque:
 
             else:
                 print('O produto que deseja alterar não existe')
-
 
         with open('estoque.txt') as arq:
             for i in x:
@@ -143,9 +142,6 @@ class ControllerEstoque:
                 "|" + str(i.quantidade))
             arq.writelines('\n')
                 
-
-
-
-
 a = ControllerEstoque()
-a.cadastrarProduto('256','caju','7','frutas','20')
+a.cadastrarProduto('333','manga','5','Fruta','9')
+
