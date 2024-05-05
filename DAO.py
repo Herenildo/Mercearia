@@ -34,7 +34,7 @@ class DaoVenda:
                 "|" + venda.itensVendidos.categoria + 
                 "|" + venda.vendedor + 
                 "|" + venda.cliente + 
-                "|" + str(venda.quantidadevendida) + 
+                "|" + str(venda.quantidadeVendida) + 
                 "|" + venda.data)
             arq.writelines('\n')
 

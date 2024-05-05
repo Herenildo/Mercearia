@@ -1,1 +1,2 @@
-001|uva|10|Fruta|Nyo|Adriele|1|04/05/2024
+001|fruta-pao|5|Fruta|joao|jose|20|05/05/2024
+001|fruta-pao|5|Fruta|joao|jose|80|05/05/2024

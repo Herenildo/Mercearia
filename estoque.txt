@@ -1,1 +1,1 @@
-001|uva|10|Fruta|19
+001|fruta-pao|5|Fruta|0
