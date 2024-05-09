@@ -1,1 +1,5 @@
 001|fruta-pao|5|Fruta|0
+99|limao|3|Fruta|150
+98|laranja|3|Fruta|150
+97|banana|3|Fruta|159
+95|maracuja|12|Fruta|300

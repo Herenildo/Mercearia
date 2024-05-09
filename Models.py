@@ -27,13 +27,15 @@ class Venda:
 
 
 class Parceiro:
-    def __init__(self, codParceiro,nome,cnpj,cpf, telefone, categoria,email,endereco,ativo:bool):
+    def __init__(self, codParceiro,nome,cnpj,cpf, telefone, email,endereco):
         self.codParceiro = codParceiro
         self.nome = nome
         self.cnpj = cnpj
         self.cpf = cpf
         self.telefone = telefone
-        self.categoria = categoria
+        self.email = email
+        self.endereco = endereco
+        
 
 class Vendedor():
     def __init__(self,cod_vendedor,nome, telefone,email,cpf,endereco):

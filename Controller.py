@@ -108,7 +108,7 @@ class ControllerEstoque:
                 "|" + i.produto.preco + 
                 "|" + i.produto.categoria + 
                 "|" + str(i.quantidade))
-            arq.writelines('\n')
+                arq.writelines('\n')
 
 
     def alterarProduto(self, codAlterar, novoCodProduto,novoDescricao,novoPreco,novoCategoria,novoQuantidade):
@@ -202,12 +202,12 @@ class ControllerVenda:
             return valorCompra
 
 
-    def relatorioProdutos(self):
+    def relatorioVendas(self):
         vendas = DaoVenda.ler()
         produtos = []
         for i in vendas:
             nome = i.itensVendidos.descricao
-            quantidade = i.quantidadevendida
+            quantidade = i.quantidadeVendida
             tamanho = list(filter(lambda x: x['produto']== descricao, produtos))
             if len(tamanho) > 0:
                 produtos = list(map(lambda x: {'produto': descricao,'quantidade': x['quantidade']+quantidade} 
@@ -220,19 +220,138 @@ class ControllerVenda:
 
             print('Esses são os produtos mais vendidos')
             a = 1
-           
             for i in ordenado:
-                #print(i.['produto'], i['quantidade'])
-
+                print(f'+++++++++++++Produto[{a}]+++++++++++++')
+                print(f"{i['produto']} -> {i['quantidade']}\n")
                 a += 1
 
-#a = ControllerEstoque()
-#a.cadastrarProduto('001','fruta-pao','5','Fruta',100)
+
+    def mostrarVenda(self, dataInicio,dataTermino):
+        vendas = DaoVenda.ler()
+        dataInicio1 = datetime.strptime(dataInicio, '%d/%m/%Y')
+        dataTermino1 = datetime.strptime(dataTermino, '%d/%m/%Y')
+
+        vendasSelecionadas = list(filter(lambda x: datetime.strptime(x.data, '%d/%m/%Y') >= dataInicio1
+                                    and datetime.strptime(x.data, '%d/%m/%Y') <= dataTermino1, vendas ))
+
+        print(f"VendasSelecionadas: {vendasSelecionadas}")                            
+        if len(vendas) == 0:
+            print('Naõ existe vendas no periodo solitado.')
+        else:
+            cont = 1
+            total = 0
 
 
-b = ControllerVenda()
-b.cadastrarVenda('100','fruta-pao','joao','jose',80)
 
+            
+            for i in vendasSelecionadas:
+                print(f"{cont} -> {i.data} -> {i.itensVendidos.codProduto} |-> {i.itensVendidos.descricao} |-> Valor: {int(i.itensVendidos.preco)} |-> Quant.: {int(i.quantidadeVendida)} Total: {int(i.itensVendidos.preco) * int(i.quantidadeVendida)}") 
+                total += (int(i.itensVendidos.preco) * int(i.quantidadeVendida))
+                cont += 1      
+
+        print(f"Total Vendido: {total}")
+
+
+class ControllerParceiro:
+    def cadastrarParceiro(self,codParceiro,nome,cnpj,cpf, telefone,email,endereco):
+        x = DaoParceiro.ler()
+
+        a = list(filter(lambda x: x.cnpj == cnpj, x))
+        
+        if len(a) == 0:
+            
+            parceiro = Parceiro(codParceiro, nome, cnpj, cpf, telefone, email, endereco)
+            DaoParceiro.salvar(parceiro)
+            
+            print('Parceiro cadastrado com sucesso')
+        else:
+            print('Parceiro ja cadastrado')
+
+    def removerParceiro(self, cnpj):
+        x = DaoParceiro.ler()
+
+    # Filtrando os parceiros com o CNPJ fornecido
+        buscacnpj = list(filter(lambda p: p.cnpj == cnpj, x))
+
+        if buscacnpj:
+        # Criando uma nova lista sem os parceiros com o CNPJ fornecido
+            x = [p for p in x if p.cnpj != cnpj]
+        
+        # Escrevendo a nova lista no arquivo
+            with open('parceiro.txt', 'w') as arq:
+                for parceiro in x:
+                    arq.write(
+                        parceiro.codParceiro + "|" + 
+                        parceiro.nome + "|" + 
+                        parceiro.cnpj + "|" + 
+                        parceiro.cpf + "|" + 
+                        parceiro.telefone + "|" + 
+                        parceiro.email + "|" + 
+                        parceiro.endereco + "\n"
+                    )
+
+            print('Parceiro removido com sucesso')
+        else:
+            print('Parceiro não encontrado')
+
+    
+
+
+    def alterarParceiro(self,alterarCnpj,novocodParceiro,novoNome,novoCnpj,novoCpf,novoTelefone,novoEmail,novoEndereco):
+        x = DaoParceiro.ler()
+
+        p = list(filter(lambda x: x.cnpj == alterarCnpj, x))
+
+        if len(p) > 0:
+            altParc = list(filter(lambda x: x.cnpj == novoCnpj,x))
+
+            if len(altParc) == 0:
+                x = list(map(lambda x: Parceiro(novocodParceiro,novoNome,novoCnpj,novoCpf,novoTelefone,novoEmail,novoEndereco) if (x.cnpj == alterarCnpj) else(x),x))
+                print("Parceiro alterado com sucesso")
+                
+
+            else:
+                print("CNPJ ja cadastrado")
+
+        else:
+            print("CNPJ não encontrado")
+
+
+        with open('parceiro.txt', 'w') as arq:
+                for parceiro in x:
+                    arq.write(
+                        parceiro.codParceiro + "|" + 
+                        parceiro.nome + "|" + 
+                        parceiro.cnpj + "|" + 
+                        parceiro.cpf + "|" + 
+                        parceiro.telefone + "|" + 
+                        parceiro.email + "|" + 
+                        parceiro.endereco + "\n"
+                    )
+
+    def mostrarParceiros(self):
+
+        with open('parceiro.txt', 'r') as arq:
+            for linha in arq:
+                # Dividindo a linha em partes separadas pelo caractere '|'
+                partes = linha.strip().split('|')
+                # Extraindo as informações de cada parte
+                codParceiro, nome, cnpj, cpf, telefone, email, endereco = partes
+                # Exibindo as informações do parceiro
+                print(f"Código do Parceiro: {codParceiro}")
+                print(f"Nome: {nome}")
+                print(f"CNPJ: {cnpj}")
+                print(f"CPF: {cpf}")
+                print(f"Telefone: {telefone}")
+                print(f"Email: {email}")
+                print(f"Endereço: {endereco}")
+                print()  # Adicionando uma linha em branco entre os parceiros
+
+
+a = ControllerParceiro()
+#a.alterarParceiro('2222','33333','Nyotech','88888','11111','071333','rrr@gg.com','rua teste')
+
+a.mostrarParceiros()
 
                         
 

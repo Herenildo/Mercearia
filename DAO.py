@@ -16,12 +16,13 @@ class DaoCategoria:
         cls.categoria = list(map(lambda x:x.replace('\n','',),cls.categoria))
         
 
-        
         cat = []
         for i in cls.categoria:
             cat.append(Categoria(i))
-        
+            
         return cat
+        
+        
 
 class DaoVenda:
     @classmethod
@@ -45,6 +46,8 @@ class DaoVenda:
 
         cls.venda = list(map(lambda x: x.replace('\n','',), cls.venda))
         cls.venda = list(map(lambda x: x.split('|'),cls.venda))
+        
+        
         vend = []
         for i in cls.venda:
             vend.append(Venda(Produtos(
@@ -57,6 +60,8 @@ class DaoVenda:
                 i[6],
                 i[7]
                 ))
+            
+            
         return vend
 
 class DaoEstoque:
@@ -80,6 +85,7 @@ class DaoEstoque:
         cls.estoque = list(map(lambda x: x.replace('\n', ''), cls.estoque))
         cls.estoque = list(map(lambda x: x.split('|'), cls.estoque))
 
+        
         est=[]
         if len(cls.estoque) > 0:
             for i in cls.estoque:
@@ -97,15 +103,13 @@ class DaoParceiro:
     def salvar(cls, parceiro:Parceiro):
         with open('parceiro.txt','a') as arq:
             arq.writelines(
-                parceiro.codParceiro +
+                      parceiro.codParceiro +
                 "|" + parceiro.nome +
                 "|" + parceiro.cnpj + 
                 "|" + parceiro.cpf + 
-                "|" + parceiro.telefone +
-                "|" + parceiro.categoria +
+                "|" + parceiro.telefone +                
                 "|" + parceiro.email +
-                "|" + parceiro.endereco +
-                "|" + parceiro.ativo
+                "|" + parceiro.endereco     
             )
             arq.writelines('\n')
 
@@ -124,8 +128,11 @@ class DaoParceiro:
                 i[2],
                 i[3],
                 i[4],
-                i[5]
+                i[5],
+                i[6]
+                
             ))
+        print(list[parc])
         return parc
         
 class DaoVendedor:
@@ -160,3 +167,7 @@ class DaoVendedor:
                 i[5]
             ))
         return vendd
+
+
+
+DaoParceiro.ler()
