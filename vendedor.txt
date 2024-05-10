@@ -1,0 +1,4 @@
+C0001|BuleBule|718888|rrrrr@oiko.com|545464|Rua do meio
+C0002|coleBule|718587|dasd@oiko.com|5445454|Rua de cima
+C0003|Agua de Bule|3568587|dapopo@oiko.com|540907454|Rua de baixo
+C0008|Danadinho|7778999|passepasse@oiko.com|55555|Rua de baixo

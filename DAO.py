@@ -140,25 +140,25 @@ class DaoVendedor:
     def salvar(cls,vendedor:Vendedor):
         with open('vendedor.txt', 'a') as arq:
             arq.writelines(
-                parceiros.cod_vendedor + 
-                "|" + parceiro.nome + 
-                "|" + parceiro.telefone + 
-                "|" + parceiro.email +
-                "|" + parceiro.cpf + 
-                "|" + parceiro.endereco)
+                vendedor.cod_vendedor + 
+                "|" + vendedor.nome + 
+                "|" + vendedor.telefone + 
+                "|" + vendedor.email +
+                "|" + vendedor.cpf + 
+                "|" + vendedor.endereco)
             arq.writelines("\n")
     
     @classmethod
     def ler(cls):
         with open('vendedor.txt', 'r') as arq:
-            cls.parceiro = arq.readlines()
+            cls.vendedor = arq.readlines()
 
         cls.vendedor = list(map(lambda x: x.replace('\n', ''), cls.vendedor))
         cls.vendedor = list(map(lambda x: x.split('|'), cls.vendedor))            
 
         vendd=[]
         for i in cls.vendedor:
-            vendedor.append(vendedor(
+            vendd.append(Vendedor(
                 i[0],
                 i[1],
                 i[2],
@@ -170,4 +170,4 @@ class DaoVendedor:
 
 
 
-DaoParceiro.ler()
+#DaoParceiro.ler()

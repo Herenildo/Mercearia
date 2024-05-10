@@ -35,6 +35,26 @@ class ControllerCategoria:
                     arq.writelines(i.categoria)
                     arq.writelines('\n')
 
+        estoque = DaoEstoque.ler()
+
+        estoque = list(map(lambda x: Estoque(Produtos(x.produtos.nome, x.produtos.descricao,x.produtos.preco,"Sem categoria"),x.quantidade)
+                            if(x.produtos.categoria == categoriaRemover) else (x), estoque ))
+
+
+        with open ('estoque.txt','w') as arq:
+            for i in estoque:
+                arq.writelines(
+                i.produto.codProduto +
+                "|" + i.produto.descricao +
+                "|" + i.produto.preco + 
+                "|" + i.produto.categoria + 
+                "|" + str(i.quantidade))
+                arq.writelines('\n')                         
+
+
+
+
+
     def alterarCategoria(self, categoriaAlterar, categoriaAlterada):
         x = DaoCategoria.ler()
 
@@ -56,6 +76,25 @@ class ControllerCategoria:
                 arq.writelines(i.categoria)
                 arq.writelines('\n')
 
+
+
+
+        estoque = DaoEstoque.ler()
+
+        estoque = list(map(lambda x: Estoque(Produtos(x.produtos.nome, x.produtos.descricao,x.produtos.preco,categoriaAlterar),x.quantidade)
+                            if(x.produtos.categoria == categoriaAlterar) else (x), estoque ))
+
+
+        with open ('estoque.txt','w') as arq:
+            for i in estoque:
+                arq.writelines(
+                i.produto.codProduto +
+                "|" + i.produto.descricao +
+                "|" + i.produto.preco + 
+                "|" + i.produto.categoria + 
+                "|" + str(i.quantidade))
+                arq.writelines('\n') 
+
     def mostrarCategoria(self):
         categorias = DaoCategoria.ler()
         if len(categorias) == 0:
@@ -63,6 +102,9 @@ class ControllerCategoria:
         else:
             for i in categorias:
                 print(f'Categoria: {i.categoria}')
+
+
+    
 
 
 class ControllerEstoque:
@@ -348,10 +390,79 @@ class ControllerParceiro:
                 print()  # Adicionando uma linha em branco entre os parceiros
 
 
-a = ControllerParceiro()
+class ControllerVendedor:
+    def cadastrarVendedor(self,cod_vendedor,nome, telefone,email,cpf,endereco):
+        x = DaoVendedor.ler()
+        a = list(filter(lambda x: x.cpf == cpf,x))
+        if len(a) == 0:
+            vendedor = Vendedor(cod_vendedor,nome, telefone,email,cpf,endereco)
+            DaoVendedor.salvar(vendedor)
+            print('Vendedor cadastrado com sucessso')
+        else:
+            print('Vendedor ja cadastrado')
+
+            
+    def removerVendedor(self, cpf):
+        x = DaoVendedor.ler()
+        buscavend = list(filter(lambda x: x.cpf == cpf, x))
+        
+        if buscavend:
+            x = [v for v in x if v.cpf != cpf]
+
+            with open('vendedor.txt','w') as arq:
+                for vendedor in x:
+                    arq.writelines(
+                        vendedor.cod_vendedor + "|"+
+                        vendedor.nome + "|"+
+                        vendedor.telefone + "|"+
+                        vendedor.email + "|"+
+                        vendedor.cpf + "|"+
+                        vendedor.endereco + "\n"
+                    )
+
+            print('Vendedor removido com sucesso')
+        else:
+            print('Vendedor não encontrado')
+
+
+
+    def alterarVendedor(self,alterarCpf,novocod_vendedor,novoNome, novoTelefone,novoEmail,novoCpf,novoEndereco):
+        x = DaoVendedor.ler()
+
+        v = list(filter(lambda x: x.cpf == alterarCpf,x))
+
+        if len(v) > 0:
+            altvend = list(filter(lambda x: x.cpf == novoCpf, x))
+
+            if len(altvend) == 0:
+                x = list(map(lambda vendedor : Vendedor(novocod_vendedor,novoNome, novoTelefone,novoEmail,novoCpf,novoEndereco) if (vendedor.cpf == alterarCpf) else(vendedor),x))
+                print("Vendedor alterado com sucesso")
+
+            
+                with open('Vendedor.txt', 'w') as arq:
+                    for vendedor in x:
+                        arq.writelines(
+                        vendedor.cod_vendedor + "|"+
+                        vendedor.nome + "|"+
+                        vendedor.telefone + "|"+
+                        vendedor.email + "|"+
+                        vendedor.cpf + "|"+
+                        vendedor.endereco + "\n"
+                    )
+
+            else:
+
+                print('Vendedor não cadastrado')
+
+
+
+
+
+
+#a = ControllerVendedor()
 #a.alterarParceiro('2222','33333','Nyotech','88888','11111','071333','rrr@gg.com','rua teste')
 
-a.mostrarParceiros()
+#a.alterarVendedor('54454','C0008','Danadinho','7778999','passepasse@oiko.com','55555','Rua de baixo')
 
                         
 
